@@ -15,8 +15,6 @@ public class FlowVMSSimulation extends Simulation {
             .userAgentHeader("Mozilla/5.0");
 
     ScenarioBuilder scn = scenario("Flow Login")
-
-            // Open Login Page
             .exec(
                     http("Open Login Page")
                             .get("/login")
@@ -26,11 +24,8 @@ public class FlowVMSSimulation extends Simulation {
                                             .saveAs("csrfToken")
                             )
             )
-
-            // Login Request
             .exec(
                     http("Login")
-                            .post("/login")
                             .post("/login")
                             .header("X-CSRF-TOKEN", "#{csrfToken}")
                             .header("X-Requested-With", "XMLHttpRequest")
@@ -40,8 +35,6 @@ public class FlowVMSSimulation extends Simulation {
                             .formParam("password", "Admin@123")
                             .check(status().in(200, 302))
             )
-
-            // Dashboard
             .exec(
                     http("Items")
                             .get("/items")
